@@ -15,6 +15,9 @@ dependencies = [
     "langchain-text-splitters>=1.0.0",
     "langchain-upstage>=0.7.5",
     "langchainhub>=0.1.21",
+    "openai>=2.8.1",
     "pypandoc>=1.16.2",
+    "python-docx>=1.2.0",
     "python-dotenv>=1.2.1",
+    "tiktoken>=0.12.0",
 ]
