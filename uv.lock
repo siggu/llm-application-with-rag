@@ -3111,11 +3111,23 @@ name = "streamlit-practice"
 version = "0.1.0"
 source = { virtual = "streamlit_practice" }
 dependencies = [
+    { name = "langchain" },
+    { name = "langchain-core" },
+    { name = "langchain-openai" },
+    { name = "langchain-pinecone" },
+    { name = "python-dotenv" },
     { name = "streamlit" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "streamlit", specifier = ">=1.51.0" }]
+requires-dist = [
+    { name = "langchain", specifier = ">=1.1.0" },
+    { name = "langchain-core", specifier = ">=1.1.0" },
+    { name = "langchain-openai", specifier = ">=1.1.0" },
+    { name = "langchain-pinecone", specifier = ">=0.2.13" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
+    { name = "streamlit", specifier = ">=1.51.0" },
+]
 
 [[package]]
 name = "sympy"
