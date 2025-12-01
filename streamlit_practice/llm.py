@@ -5,7 +5,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_pinecone import PineconeVectorStore
-
+from config import answer_examples
 
 load_dotenv()
 
@@ -39,21 +39,30 @@ def get_llm(model: str = "gpt-4o-mini"):
 
 
 def get_rag_prompt():
+    # Few-shot examples를 문자열로 포맷팅
+    examples_text = "\n\n".join(
+        [f"질문: {ex['input']}\n답변: {ex['output']}" for ex in answer_examples]
+    )
+
     # RAG 프롬프트 템플릿
     rag_prompt = ChatPromptTemplate.from_template(
-        """
+        f"""
         [Identity]
         - 당신은 최고의 한국 소득세 전문가입니다.
         - [Context]를 참고해서 사용자의 질문에 답변해주세요.
 
+        [Examples]
+        다음은 좋은 답변들의 예시입니다:
+        {examples_text}
+
         [Chat History]
-        {chat_history}
+        {{chat_history}}
 
         [Context]
-        {context}
+        {{context}}
 
         [Question]
-        {question}
+        {{question}}
         """
     )
     return rag_prompt
