@@ -4,6 +4,9 @@
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def get_retriever():
