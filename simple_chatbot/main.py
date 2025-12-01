@@ -1,6 +1,45 @@
-def main():
-    print("Hello from simple-chatbot!")
+import streamlit as st
 
+from rag_chain import get_ai_message_stream
 
-if __name__ == "__main__":
-    main()
+st.set_page_config(
+    page_title="프롬프트 엔지니어링 챗봇",
+    page_icon="🤖",
+)
+
+st.title("🤖 프롬프트 엔지니어링 챗봇")
+st.caption("프롬프트 엔지니어링 관련 질문에 답변해 드립니다.")
+
+if "message_list" not in st.session_state:
+    st.session_state["message_list"] = []
+
+for message in st.session_state["message_list"]:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if user_question := st.chat_input(
+    placeholder="프롬프트 엔지니어링에 관련된 궁금한 내용들을 말씀해주세요!"
+):
+    with st.chat_message("user"):
+        st.write(user_question)
+    st.session_state["message_list"].append({"role": "user", "content": user_question})
+
+    with st.chat_message("ai"):
+        # ⭐ 상태 표시와 함께 스트리밍
+        with st.status("🤔 답변을 생성하고 있습니다...", expanded=True) as status:
+            message_placeholder = st.empty()
+            full_response = ""
+
+            # 스트리밍으로 답변 받기
+            for chunk in get_ai_message_stream(
+                user_question, st.session_state["message_list"][:-1]
+            ):
+                full_response += chunk
+                # 커서 효과와 함께 실시간 표시
+                message_placeholder.markdown(full_response + "▌")
+
+            # 최종 응답 (커서 제거)
+            message_placeholder.markdown(full_response)
+            status.update(label="✅ 답변 완료!", state="complete")
+
+    st.session_state["message_list"].append({"role": "ai", "content": full_response})
