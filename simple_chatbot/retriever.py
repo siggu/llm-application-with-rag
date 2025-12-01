@@ -12,7 +12,7 @@ load_dotenv()
 def get_retriever():
     # 벡터 데이터베이스 설정
     embedding = OpenAIEmbeddings(model="text-embedding-3-large")
-    index_name = "tax-markdown-index"
+    index_name = "prompt-engineering-index"
 
     database = PineconeVectorStore(
         embedding=embedding,
